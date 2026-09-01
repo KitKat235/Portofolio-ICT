@@ -1,0 +1,1737 @@
+<!DOCTYPE html>
+<html lang="id" class="dark scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dethan Dhammata - Cosmic Portfolio & Space CMS</title>
+
+    <!-- Google Fonts Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web">
+    </script>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <script>
+        document.documentElement.classList.add('dark');
+        document.documentElement.classList.remove('light');
+
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            200: '#bbf7d0',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        },
+                        cosmic: {
+                            purple: '#a855f7',
+                            cyan: '#06b6d4',
+                            pink: '#ec4899',
+                            amber: '#f59e0b',
+                            glow: '#3b82f6',
+                            dark: '#030712',
+                            card: '#0f172a'
+                        }
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px -2px rgba(0, 0, 0, 0.05)',
+                        'hover': '0 12px 35px -10px rgba(0, 0, 0, 0.12)',
+                        'cosmic-glow': '0 0 30px 2px rgba(34, 197, 94, 0.45), 0 0 20px -2px rgba(168, 85, 247, 0.35)',
+                        'neon-cyan': '0 0 30px 2px rgba(6, 182, 212, 0.55)',
+                        'purple-glow': '0 0 35px 2px rgba(168, 85, 247, 0.5)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .cosmic-input {
+                @apply w-full bg-slate-900/90 border border-slate-700/80 rounded-2xl px-4 py-3.5 text-slate-100 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all shadow-inner text-sm dark:bg-slate-900/90 dark:text-white;
+            }
+            .admin-input {
+                @apply w-full bg-slate-900 border border-slate-700/80 rounded-2xl px-4 py-3 text-white focus:ring-2 focus:ring-brand-500 focus:border-brand-500 transition-all outline-none text-base sm:text-sm;
+            }
+            .admin-label {
+                @apply block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-2;
+            }
+            .admin-nav-item {
+                @apply flex items-center gap-3 px-4 py-3 rounded-2xl text-slate-400 hover:text-white hover:bg-white/5 transition-all text-sm font-medium w-full text-left;
+            }
+            .admin-nav-item.active {
+                @apply bg-brand-500/20 text-brand-400 font-semibold border border-brand-500/40 shadow-cosmic-glow;
+            }
+            .toggle-checkbox {
+                @apply w-5 h-5 rounded-md border border-slate-600 bg-slate-800 text-brand-500 focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 focus:ring-offset-slate-900 transition;
+            }
+            .light .toggle-checkbox {
+                @apply border-slate-300 bg-white text-brand-600 focus:ring-offset-white;
+            }
+        }
+    </style>
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .space-bg-dark {
+            background-color: #030712 !important;
+            color: #f8fafc !important;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.28) 0%, transparent 45%),
+                radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.28) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.22) 0%, transparent 55%);
+        }
+
+        .space-bg-light {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+            background-image:
+                radial-gradient(circle at 15% 20%, rgba(168, 85, 247, 0.15) 0%, transparent 45%),
+                radial-gradient(circle at 85% 60%, rgba(6, 182, 212, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 50% 90%, rgba(34, 197, 94, 0.15) 0%, transparent 55%);
+        }
+
+        .dark .glass {
+            background: rgba(3, 7, 18, 0.85) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .light .glass {
+            background: rgba(255, 255, 255, 0.88) !important;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+        }
+
+        .dark .glass-card-cosmic {
+            background: rgba(15, 23, 42, 0.88);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: #f8fafc;
+        }
+
+        .light .glass-card-cosmic {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(15, 23, 42, 0.12);
+            color: #0f172a;
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.06);
+        }
+
+        .light .text-slate-200 {
+            color: #1e293b !important;
+        }
+        .light .text-slate-300 {
+            color: #334155 !important;
+        }
+        .light .text-slate-400 {
+            color: #475569 !important;
+        }
+        .light .text-white,
+        .light .text-slate-100 {
+            color: #0f172a !important;
+        }
+        .light .bg-slate-900,
+        .light .bg-slate-950 {
+            background-color: rgba(255, 255, 255, 0.95) !important;
+            color: #0f172a !important;
+        }
+        .light .border-white\/10,
+        .light .border-white\/15,
+        .light .border-white\/20 {
+            border-color: rgba(15, 23, 42, 0.12) !important;
+        }
+        .light .cosmic-input,
+        .light .admin-input {
+            background-color: #ffffff !important;
+            color: #0f172a !important;
+            border-color: #cbd5e1 !important;
+        }
+        .light .cosmic-input::placeholder,
+        .light .admin-input::placeholder {
+            color: #64748b !important;
+        }
+        .light .admin-label {
+            color: #334155 !important;
+        }
+        .light .admin-nav-item {
+            color: #475569 !important;
+        }
+        .light .admin-nav-item:hover {
+            color: #0f172a !important;
+            background: rgba(0, 0, 0, 0.05) !important;
+        }
+        .light .admin-nav-item.active {
+            background-color: rgba(34, 197, 94, 0.15) !important;
+            color: #15803d !important;
+            border-color: rgba(34, 197, 94, 0.4) !important;
+        }
+        .light aside {
+            background-color: #ffffff !important;
+            border-color: rgba(0, 0, 0, 0.1) !important;
+        }
+        .light #view-admin {
+            background-color: #f8fafc !important;
+            color: #0f172a !important;
+        }
+
+        .cosmic-gradient-text {
+            background: linear-gradient(135deg, #16a34a 0%, #0284c7 50%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .dark .cosmic-gradient-text {
+            background: linear-gradient(135deg, #4ade80 0%, #38bdf8 50%, #c084fc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .project-card {
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover {
+            transform: translateY(-8px);
+        }
+        .project-image {
+            overflow: hidden;
+        }
+        .project-image img {
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .project-card:hover .project-image img {
+            transform: scale(1.1);
+        }
+
+        .badge {
+            background-color: rgba(30, 41, 59, 0.8);
+            color: #cbd5e1;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.3rem 0.75rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            transition: all 0.3s ease;
+        }
+        .light .badge {
+            background-color: rgba(226, 232, 240, 0.9);
+            color: #334155;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .float-badge {
+            color: white;
+            background: rgba(15, 23, 42, 0.9);
+            border-color: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .light .float-badge {
+            color: #0f172a !important;
+            background: rgba(255, 255, 255, 0.92) !important;
+            border-color: rgba(0, 0, 0, 0.2) !important;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .avatar-container {
+            aspect-ratio: 1 / 1;
+            overflow: hidden;
+            background: #0f172a;
+        }
+        .avatar-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .light .avatar-container {
+            background: #e2e8f0;
+        }
+        .avatar-container.no-border {
+            padding: 0 !important;
+            background: transparent !important;
+            box-shadow: none !important;
+        }
+        .avatar-container.no-border .avatar-inner {
+            border-radius: 22px;
+            background: transparent;
+        }
+        .avatar-container .avatar-inner {
+            width: 100%;
+            height: 100%;
+            border-radius: 22px;
+            overflow: hidden;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #334155;
+            border-radius: 99px;
+        }
+
+        @keyframes cosmicPulse {
+            0%,
+            100% {
+                opacity: 0.45;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.9;
+                transform: scale(1.1);
+            }
+        }
+        .animate-cosmic-glow {
+            animation: cosmicPulse 5s infinite ease-in-out;
+        }
+
+        @keyframes floatOrbit {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+            50% {
+                transform: translateY(-14px) rotate(4deg);
+            }
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+        .animate-float {
+            animation: floatOrbit 5s infinite ease-in-out;
+        }
+
+        #toast-container {
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+    </style>
+</head>
+
+<body class="space-bg-dark antialiased selection:bg-brand-500 selection:text-white relative transition-colors duration-500 overflow-x-hidden min-h-screen flex flex-col">
+
+    <!-- Interactive Space Canvas -->
+    <canvas id="space-canvas" class="fixed inset-0 pointer-events-none z-10 opacity-90"></canvas>
+
+    <!-- Toast -->
+    <div id="toast-container" class="fixed bottom-6 right-6 z-[100] translate-y-20 opacity-0 pointer-events-none transition-all duration-300">
+        <div id="toast-card" class="glass-card-cosmic px-5 py-4 rounded-2xl shadow-purple-glow flex items-center gap-3 border border-brand-500/40 text-sm font-semibold">
+            <i id="toast-icon" class="ph ph-check-circle text-brand-400 text-2xl"></i>
+            <span id="toast-message" class="text-white">Pesan berhasil disimpan!</span>
+        </div>
+    </div>
+
+    <!-- Header -->
+    <header class="fixed top-0 left-0 right-0 z-40 transition-all duration-300 glass" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 h-20 flex items-center justify-between">
+            <a href="#hero" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-500 via-emerald-400 to-cosmic-cyan flex items-center justify-center font-black text-slate-950 text-xl shadow-cosmic-glow group-hover:scale-105 transition-transform">D</div>
+                <div class="flex flex-col">
+                    <span class="font-extrabold text-current text-base tracking-tight leading-none" id="brand-name">Dethan Dhammata</span>
+                    <span class="text-[10px] font-semibold text-brand-400 tracking-wider uppercase mt-1 flex items-center gap-1">
+                        <i class="ph ph-planet text-xs"></i> Portfolio & Space CMS
+                    </span>
+                </div>
+            </a>
+            <nav class="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300 dark:text-slate-300">
+                <a href="#hero" class="hover:text-brand-400 transition-colors">Beranda</a>
+                <a href="#projects" class="hover:text-brand-400 transition-colors">Karya Buatan</a>
+                <a href="#contact" class="hover:text-brand-400 transition-colors">Kontak</a>
+            </nav>
+            <div class="hidden md:flex items-center gap-3">
+                <button onclick="window.toggleTheme()" class="w-10 h-10 rounded-2xl bg-slate-800/80 hover:bg-slate-700/80 border border-white/10 text-slate-300 hover:text-white flex items-center justify-center transition-colors shadow-sm">
+                    <i id="theme-icon" class="ph ph-moon text-lg"></i>
+                </button>
+                <div id="admin-header-btn-container"></div>
+            </div>
+            <div class="flex md:hidden items-center gap-2">
+                <button onclick="window.toggleTheme()" class="w-9 h-9 rounded-xl bg-slate-800/80 border border-white/10 text-slate-300 flex items-center justify-center">
+                    <i id="theme-icon-mobile" class="ph ph-moon text-base"></i>
+                </button>
+                <button onclick="window.toggleMobileMenu()" class="w-10 h-10 rounded-xl bg-slate-800/80 border border-white/10 text-slate-200 flex items-center justify-center text-xl">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+        </div>
+        <div id="mobile-menu" class="hidden md:hidden bg-slate-950/95 border-b border-white/10 px-4 py-6 space-y-4">
+            <nav class="flex flex-col space-y-3 font-medium text-slate-300 text-sm">
+                <a href="#hero" onclick="window.toggleMobileMenu()" class="hover:text-white py-1">Beranda</a>
+                <a href="#projects" onclick="window.toggleMobileMenu()" class="hover:text-white py-1">Karya Buatan</a>
+                <a href="#contact" onclick="window.toggleMobileMenu()" class="hover:text-white py-1">Kontak</a>
+            </nav>
+            <div class="pt-2 border-t border-white/10 flex flex-col gap-2" id="mobile-admin-btn-container"></div>
+        </div>
+    </header>
+
+    <!-- Frontend View -->
+    <div id="view-frontend" class="block w-full flex-1 relative z-20">
+        <main class="pt-28 sm:pt-36 pb-16">
+
+            <!-- Hero Section -->
+            <section id="hero" class="max-w-6xl mx-auto px-4 sm:px-6 mb-20 sm:mb-28">
+                <div class="flex flex-col-reverse md:flex-row items-center gap-10 md:gap-16">
+                    <div class="flex-1 text-center md:text-left">
+                        <!-- Tagline - akan hilang jika teks kosong -->
+                        <div id="fe-hero-tagline-wrapper" class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-brand-500/15 text-brand-400 text-xs sm:text-sm font-semibold mb-6 border border-brand-500/40 backdrop-blur-md shadow-cosmic-glow">
+                            <span class="relative flex h-2.5 w-2.5">
+                                <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-brand-500"></span>
+                            </span>
+                            <span id="fe-hero-tagline-text">Terbuka untuk Kolaborasi & Proyek</span>
+                        </div>
+                        <h1 id="fe-hero-title" class="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight mb-6 leading-[1.15]">
+                            Membangun <span class="cosmic-gradient-text">Pengalaman Digital</span> yang Berkesan.
+                        </h1>
+                        <p id="fe-hero-bio" class="text-slate-300 dark:text-slate-300 text-base sm:text-lg mb-8 max-w-2xl leading-relaxed">
+                            Halo! Saya Dethan Dhammata, seorang Pengembang & Desainer Digital. Saya berfokus pada pembuatan aplikasi web modern yang cepat, responsif, dan mudah digunakan.
+                        </p>
+                        <div id="fe-hero-buttons" class="flex flex-wrap gap-4 justify-center md:justify-start">
+                            <a href="#projects" class="bg-gradient-to-r from-brand-500 via-emerald-500 to-cosmic-cyan text-slate-950 font-extrabold px-7 py-3.5 rounded-2xl hover:opacity-95 transition-all text-sm shadow-cosmic-glow inline-flex items-center gap-2 hover:scale-[1.03]">
+                                <i class="ph ph-rocket-launch text-lg"></i> Lihat Karya
+                            </a>
+                            <button onclick="window.openContactModal()" class="bg-white/10 hover:bg-white/20 border border-white/20 px-7 py-3.5 rounded-2xl font-semibold transition-all text-sm inline-flex items-center gap-2 backdrop-blur-md">
+                                <i class="ph ph-paper-plane-tilt text-lg"></i> Hubungi Saya
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Profile Image & Cosmic Orbit -->
+                    <div class="flex-shrink-0 relative animate-float">
+                        <div id="fe-avatar-wrapper" class="w-48 h-48 sm:w-56 sm:h-56 md:w-64 md:h-64 rounded-3xl p-1 bg-gradient-to-tr from-brand-500 via-cosmic-cyan to-cosmic-purple shadow-purple-glow transform rotate-2 hover:rotate-0 transition-transform duration-500 avatar-container">
+                            <div class="avatar-inner">
+                                <img id="fe-hero-avatar"
+                                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80"
+                                alt="Profile Dethan Dhammata"
+                                onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22400%22 height=%22400%22%3E%3Crect width=%22400%22 height=%22400%22 fill=%22%231e293b%22/%3E%3Ctext x=%2250%25%22 y=%2250%25%22 text-anchor=%22middle%22 dy=%22.35em%22 fill=%22%2394a3b8%22 font-size=%2230%22 font-family=%22sans-serif%22%3EAvatar%3C/text%3E%3C/svg%3E'">
+                            </div>
+                        </div>
+                        <div class="absolute -bottom-4 -right-3 float-badge p-3 rounded-2xl shadow-cosmic-glow flex items-center gap-2 text-xs font-bold border">
+                            <i class="ph ph-sparkle text-brand-400 text-lg"></i> Fullstack Explorer
+                        </div>
+                        <div class="absolute -top-3 -left-3 float-badge px-3 py-1.5 rounded-2xl shadow-lg flex items-center gap-1.5 text-[11px] font-semibold border">
+                            <i class="ph ph-planet text-cosmic-cyan text-base"></i> Orbit Ready
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Projects -->
+            <section id="projects" class="max-w-6xl mx-auto px-4 sm:px-6 mb-24">
+                <div class="mb-10">
+                    <span class="text-brand-400 font-bold text-xs sm:text-sm tracking-widest uppercase mb-2 flex items-center gap-1.5">
+                        <i class="ph ph-planet text-base"></i> PORTOFOLIO KOSMIS
+                    </span>
+                    <h2 class="text-3xl sm:text-4xl font-extrabold">Karya Buatan</h2>
+                    <p class="text-slate-400 text-sm mt-2">Kumpulan proyek terbaik yang telah saya selesaikan.</p>
+                </div>
+                <div class="relative w-full md:w-96 mb-8 flex items-center">
+                    <i class="ph ph-magnifying-glass absolute left-4 text-slate-400 text-lg pointer-events-none z-10"></i>
+                    <input type="text" id="project-search" oninput="window.filterProjects(this.value)" placeholder="Cari karya / teknologi..." class="cosmic-input !pl-12 py-3 text-xs sm:text-sm">
+                </div>
+                <div id="fe-projects-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"></div>
+            </section>
+
+            <!-- Dynamic Custom Sections -->
+            <div id="fe-dynamic-sections"></div>
+
+            <!-- Contact Section -->
+            <section id="contact" class="max-w-5xl mx-auto px-4 sm:px-6 py-12">
+                <div class="glass-card-cosmic rounded-3xl p-8 sm:p-14 text-center relative overflow-hidden shadow-2xl border border-white/10">
+                    <div class="absolute -top-24 -right-24 w-80 h-80 bg-brand-500/20 rounded-full blur-3xl pointer-events-none animate-cosmic-glow"></div>
+                    <div class="absolute -bottom-24 -left-24 w-80 h-80 bg-cosmic-purple/20 rounded-full blur-3xl pointer-events-none animate-cosmic-glow" style="animation-delay: 2.5s;"></div>
+                    <div class="relative z-10 max-w-xl mx-auto">
+                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-2xl bg-brand-500/20 text-brand-400 border border-brand-500/30 mb-4 shadow-cosmic-glow">
+                            <i class="ph ph-planet text-2xl"></i>
+                        </div>
+                        <span id="fe-contact-tagline" class="text-brand-400 font-bold text-xs sm:text-sm tracking-widest uppercase mb-2 block">MARI BERDISKUSI</span>
+                        <h2 id="fe-contact-title" class="text-2xl sm:text-4xl font-extrabold mb-4">Punya Ide Proyek Menarik?</h2>
+                        <p id="fe-contact-desc" class="text-slate-300 dark:text-slate-300 text-sm sm:text-base mb-8 leading-relaxed">
+                            Tertarik bekerja sama atau ingin bertanya tentang proyek digital Anda? Silakan hubungi saya kapan saja.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-3.5 justify-center">
+                            <button onclick="window.openContactModal()" class="bg-gradient-to-r from-brand-500 to-emerald-500 hover:from-brand-600 hover:to-emerald-600 text-slate-950 font-extrabold px-8 py-3.5 rounded-2xl transition-all text-sm inline-flex items-center justify-center gap-2.5 shadow-cosmic-glow hover:scale-[1.02]">
+                                <i class="ph ph-rocket-launch text-xl"></i> <span id="fe-contact-btn-text">Kirim Pesan</span>
+                            </button>
+                            <button onclick="window.copyToClipboard(window.appState.data.hero.email)" class="bg-white/10 hover:bg-white/20 border border-white/15 px-7 py-3.5 rounded-2xl font-semibold transition-all text-sm inline-flex items-center justify-center gap-2 backdrop-blur-md" id="copy-btn">
+                                <i class="ph ph-copy text-xl"></i> Salin Email
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer class="border-t border-slate-200 dark:border-white/10 py-8 bg-slate-100/90 dark:bg-slate-950/90 transition-colors">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-700 dark:text-slate-300 font-medium">
+                <p>© <span id="year"></span> <strong class="text-slate-900 dark:text-white font-bold">Dethan Dhammata</strong>. Space CMS Powered.</p>
+                <div class="flex items-center gap-4">
+                    <button onclick="window.navigate('login')" class="hover:text-brand-600 dark:hover:text-brand-400 flex items-center gap-1.5 transition-colors font-semibold text-slate-700 dark:text-slate-300">
+                        <i class="ph ph-lock-key text-base text-brand-500"></i> Admin Portal
+                    </button>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Admin View -->
+    <div id="view-admin" class="hidden min-h-screen bg-slate-950 text-slate-100 flex flex-col md:flex-row relative z-30">
+        <aside class="w-full md:w-72 bg-slate-900 border-r border-white/10 p-6 flex flex-col justify-between">
+            <div>
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-white/10">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-brand-500 to-cosmic-cyan text-slate-950 font-black flex items-center justify-center shadow-cosmic-glow">A</div>
+                        <div>
+                            <h3 class="font-bold text-slate-900 dark:text-white text-sm">Space CMS Dashboard</h3>
+                            <p class="text-[10px] text-brand-400 flex items-center gap-1">
+                                <i class="ph ph-cloud-check text-xs"></i> Firestore Cloud Sync
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-1">
+                        <button onclick="window.toggleTheme()" class="text-slate-400 hover:text-white p-2 rounded-lg bg-white/5">
+                            <i id="theme-icon-admin" class="ph ph-moon text-lg"></i>
+                        </button>
+                        <button onclick="window.navigate('frontend')" class="text-slate-400 hover:text-white p-2 rounded-lg bg-white/5">
+                            <i class="ph ph-house text-lg"></i>
+                        </button>
+                    </div>
+                </div>
+                <nav class="space-y-1">
+                    <button onclick="window.switchAdminTab('hero')" id="tab-btn-hero" class="admin-nav-item active">
+                        <i class="ph ph-user text-lg"></i> Hero & Profil Utama
+                    </button>
+                    <button onclick="window.switchAdminTab('contact')" id="tab-btn-contact" class="admin-nav-item">
+                        <i class="ph ph-paper-plane-tilt text-lg"></i> Seksi Kontak & Diskusi
+                    </button>
+                    <button onclick="window.switchAdminTab('projects')" id="tab-btn-projects" class="admin-nav-item">
+                        <i class="ph ph-folder-open text-lg"></i> Kelola Karya
+                    </button>
+                    <button onclick="window.switchAdminTab('sections')" id="tab-btn-sections" class="admin-nav-item">
+                        <i class="ph ph-squares-four text-lg"></i> Kelola Seksi Kustom
+                    </button>
+                    <button onclick="window.switchAdminTab('messages')" id="tab-btn-messages" class="admin-nav-item">
+                        <i class="ph ph-envelope text-lg"></i> Pesan Masuk
+                    </button>
+                    <button onclick="window.switchAdminTab('security')" id="tab-btn-security" class="admin-nav-item">
+                        <i class="ph ph-shield-check text-lg"></i> Keamanan Admin
+                    </button>
+                </nav>
+            </div>
+            <div class="pt-6 border-t border-white/10 space-y-3">
+                <button onclick="window.navigate('frontend')" class="w-full bg-brand-500/15 hover:bg-brand-500/25 text-brand-600 dark:text-brand-300 border border-brand-500/40 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2 transition-all shadow-sm">
+                    <i class="ph ph-globe text-base text-brand-500"></i> Pratinjau Web Utama
+                </button>
+                <button onclick="window.handleLogout()" class="w-full bg-red-500/10 hover:bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/20 font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-out text-base"></i> Keluar (Logout)
+                </button>
+            </div>
+        </aside>
+
+        <main class="flex-1 p-6 sm:p-10 overflow-y-auto">
+            <!-- Tab: Hero -->
+            <div id="admin-tab-hero" class="admin-tab-content space-y-6 max-w-4xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Kelola Hero & Profil</h2>
+                    <p class="text-xs text-slate-400 mt-1">Atur teks, foto profil, dan tampilkan/sembunyikan elemen.</p>
+                </div>
+                <form onsubmit="window.saveHeroSection(event)" class="space-y-4 glass-card-cosmic p-6 rounded-3xl border border-white/10">
+                    <div><label class="admin-label">Tagline Hero</label><input type="text" id="adm-hero-tagline" class="admin-input"></div>
+                    <div><label class="admin-label">Judul Utama Hero (Mendukung Tag HTML)</label><input type="text" id="adm-hero-title" class="admin-input"></div>
+                    <div><label class="admin-label">Biografi Singkat</label><textarea id="adm-hero-bio" rows="3" class="admin-input resize-none"></textarea></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div><label class="admin-label">Email Utama</label><input type="email" id="adm-hero-email" class="admin-input"></div>
+                        <div><label class="admin-label">URL Foto Profil Avatar</label><input type="text" id="adm-hero-avatar" class="admin-input"></div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2 border-t border-white/10">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="adm-hide-buttons" class="toggle-checkbox">
+                            <label for="adm-hide-buttons" class="text-sm font-medium text-slate-300">Sembunyikan tombol "Lihat Karya" & "Hubungi Saya"</label>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="adm-hide-avatar-border" class="toggle-checkbox">
+                            <label for="adm-hide-avatar-border" class="text-sm font-medium text-slate-300">Sembunyikan border/background foto profil</label>
+                        </div>
+                    </div>
+                    <button type="submit" class="bg-brand-500 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm hover:bg-brand-400 transition-colors flex items-center gap-2 shadow-cosmic-glow">
+                        <i class="ph ph-floppy-disk text-lg"></i> Simpan Hero ke Cloud Permanen
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tab: Kontak -->
+            <div id="admin-tab-contact" class="admin-tab-content hidden space-y-6 max-w-4xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Kelola Seksi Kontak</h2>
+                    <p class="text-xs text-slate-400 mt-1">Ubah judul, deskripsi, dan tombol pada seksi "Mari Berdiskusi".</p>
+                </div>
+                <form onsubmit="window.saveContactSection(event)" class="space-y-4 glass-card-cosmic p-6 rounded-3xl border border-white/10">
+                    <div><label class="admin-label">Tagline Atas Kontak</label><input type="text" id="adm-contact-tagline" class="admin-input"></div>
+                    <div><label class="admin-label">Judul Utama Seksi Kontak</label><input type="text" id="adm-contact-title" class="admin-input"></div>
+                    <div><label class="admin-label">Deskripsi Seksi Kontak</label><textarea id="adm-contact-desc" rows="3" class="admin-input resize-none"></textarea></div>
+                    <div><label class="admin-label">Teks Tombol Utama Kontak</label><input type="text" id="adm-contact-btn-text" class="admin-input"></div>
+                    <button type="submit" class="bg-brand-500 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm hover:bg-brand-400 transition-colors flex items-center gap-2 shadow-cosmic-glow">
+                        <i class="ph ph-floppy-disk text-lg"></i> Simpan Seksi Kontak ke Cloud
+                    </button>
+                </form>
+            </div>
+
+            <!-- Tab: Projects -->
+            <div id="admin-tab-projects" class="admin-tab-content hidden space-y-6 max-w-5xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Kelola Karya Buatan</h2>
+                        <p class="text-xs text-slate-400 mt-1">Tambah, edit, atau hapus portofolio karya Anda.</p>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <button onclick="window.resetProjectsToDefault()" class="bg-slate-800 text-slate-300 hover:text-white border border-white/10 px-4 py-3 rounded-2xl text-xs font-semibold transition-colors flex items-center gap-1.5">
+                            <i class="ph ph-arrow-counter-clockwise text-base"></i> Reset Default
+                        </button>
+                        <button onclick="window.openProjectModal()" class="bg-brand-500 text-slate-950 font-extrabold px-5 py-3 rounded-2xl text-xs sm:text-sm flex items-center gap-2 shadow-cosmic-glow">
+                            <i class="ph ph-plus-circle text-lg"></i> Tambah Karya Baru
+                        </button>
+                    </div>
+                </div>
+                <div id="adm-projects-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Tab: Sections -->
+            <div id="admin-tab-sections" class="admin-tab-content hidden space-y-6 max-w-5xl">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div>
+                        <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Kelola Seksi Kustom</h2>
+                        <p class="text-xs text-slate-400 mt-1">Hapus seksi atau buat seksi baru dengan gambar.</p>
+                    </div>
+                    <button onclick="window.openSectionModal()" class="bg-brand-500 text-slate-950 font-extrabold px-5 py-3 rounded-2xl text-xs sm:text-sm flex items-center gap-2 shadow-cosmic-glow">
+                        <i class="ph ph-plus text-lg"></i> Tambah Seksi Baru
+                    </button>
+                </div>
+                <div id="adm-sections-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Tab: Messages -->
+            <div id="admin-tab-messages" class="admin-tab-content hidden space-y-6 max-w-5xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Pesan Masuk</h2>
+                    <p class="text-xs text-slate-400 mt-1">Semua pesan yang dikirim melalui formulir kontak akan muncul di sini.</p>
+                </div>
+                <div id="adm-messages-list" class="space-y-4"></div>
+            </div>
+
+            <!-- Tab: Security -->
+            <div id="admin-tab-security" class="admin-tab-content hidden space-y-6 max-w-3xl">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Pengaturan Keamanan</h2>
+                    <p class="text-xs text-slate-400 mt-1">Ubah username dan password login admin Anda.</p>
+                </div>
+                <form onsubmit="window.saveSecuritySettings(event)" class="space-y-4 glass-card-cosmic p-6 rounded-3xl border border-white/10">
+                    <div><label class="admin-label">Username Baru</label><input type="text" id="adm-sec-username" class="admin-input" required></div>
+                    <div><label class="admin-label">Password Saat Ini</label><input type="password" id="adm-sec-current-pass" class="admin-input" required></div>
+                    <div><label class="admin-label">Password Baru</label><input type="password" id="adm-sec-new-pass" class="admin-input" required></div>
+                    <button type="submit" class="bg-brand-500 text-slate-950 font-bold px-6 py-3 rounded-xl text-sm hover:bg-brand-400 transition-colors flex items-center gap-2 shadow-cosmic-glow">
+                        <i class="ph ph-lock-key text-lg"></i> Perbarui Kredensial Permanen
+                    </button>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <!-- Login Portal -->
+    <div id="view-login" class="hidden fixed inset-0 z-50 bg-slate-950/90 backdrop-blur-xl flex items-center justify-center p-4">
+        <div class="relative bg-slate-900/95 rounded-3xl shadow-2xl w-full max-w-md p-6 sm:p-8 border border-white/10 overflow-hidden">
+            <div class="absolute -top-20 -right-20 w-48 h-48 bg-brand-500/25 rounded-full blur-3xl pointer-events-none"></div>
+            <div class="absolute -bottom-20 -left-20 w-48 h-48 bg-cosmic-purple/25 rounded-full blur-3xl pointer-events-none"></div>
+            <button onclick="window.navigate('frontend')" class="absolute top-5 right-5 text-slate-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors z-10"><i class="ph ph-x text-xl"></i></button>
+            <div class="relative z-10 flex flex-col items-center text-center mb-6">
+                <div class="relative mb-4">
+                    <div class="w-16 h-16 bg-gradient-to-tr from-brand-500 via-emerald-400 to-cosmic-cyan rounded-2xl flex items-center justify-center text-slate-950 text-3xl shadow-cosmic-glow transform rotate-3">
+                        <i class="ph ph-shield-check font-bold"></i>
+                    </div>
+                </div>
+                <h2 class="text-2xl font-extrabold text-white tracking-tight mb-1">Akses Portal Admin</h2>
+                <p class="text-slate-400 text-xs sm:text-sm">Masuk untuk mengelola seluruh isi portofolio Anda.</p>
+            </div>
+            <form id="login-form" onsubmit="window.handleLogin(event)" class="space-y-4 relative z-10">
+                <div id="login-error" class="hidden bg-red-500/10 text-red-400 text-xs p-3.5 rounded-2xl border border-red-500/30 flex items-center gap-2.5">
+                    <i class="ph ph-warning-circle text-lg flex-shrink-0"></i>
+                    <span>Kredensial salah. Periksa kembali username & password.</span>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Username</label>
+                    <div class="relative flex items-center">
+                        <i class="ph ph-user absolute left-4 text-slate-400 text-lg pointer-events-none z-10"></i>
+                        <input type="text" id="login-username" class="cosmic-input !pl-12" placeholder="Masukkan username" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Password</label>
+                    <div class="relative flex items-center">
+                        <i class="ph ph-lock-key absolute left-4 text-slate-400 text-lg pointer-events-none z-10"></i>
+                        <input type="password" id="login-password" class="cosmic-input !pl-12" placeholder="••••••••" required>
+                    </div>
+                </div>
+                <button type="submit" class="w-full bg-gradient-to-r from-brand-500 via-emerald-500 to-cosmic-cyan text-slate-950 font-extrabold py-3.5 rounded-2xl hover:opacity-95 transition-all text-sm mt-3 shadow-cosmic-glow flex items-center justify-center gap-2">
+                    <i class="ph ph-sign-in text-lg"></i> Masuk Dashboard Admin
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Contact Modal -->
+    <div id="contact-modal" class="hidden fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900/95 rounded-3xl shadow-2xl w-full max-w-lg overflow-hidden flex flex-col border border-white/10 relative">
+            <div class="px-6 py-5 border-b border-white/10 flex justify-between items-center relative z-10 bg-slate-900/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-brand-500 to-emerald-400 text-slate-950 flex items-center justify-center font-bold shadow-cosmic-glow">
+                        <i class="ph ph-rocket-launch text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-lg font-extrabold text-white leading-tight">Kirim Pesan Kosmis</h3>
+                        <p class="text-xs text-slate-400">Sampaikan pesan, ide, atau tawaran proyek Anda</p>
+                    </div>
+                </div>
+                <button onclick="window.closeContactModal()" class="text-slate-400 hover:text-white p-2 rounded-full bg-white/5 hover:bg-white/10 transition-colors"><i class="ph ph-x text-xl"></i></button>
+            </div>
+            <form onsubmit="window.handleSendContactForm(event)" class="p-6 space-y-4 relative z-10">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Nama Anda</label><input type="text" id="contact-name" class="cosmic-input" placeholder="Nama lengkap" required></div>
+                    <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Email Anda</label><input type="email" id="contact-email" class="cosmic-input" placeholder="nama@domain.com" required></div>
+                </div>
+                <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Subjek Pesan</label><input type="text" id="contact-subject" class="cosmic-input" placeholder="Misal: Penawaran Proyek Website" required></div>
+                <div><label class="block text-xs font-bold uppercase tracking-wider text-slate-300 mb-2">Isi Pesan</label><textarea id="contact-message" rows="4" class="cosmic-input resize-none" placeholder="Tuliskan detail pertanyaan Anda..." required></textarea></div>
+                <div class="pt-2 flex flex-col sm:flex-row gap-3">
+                    <button type="submit" class="flex-1 bg-gradient-to-r from-brand-500 via-emerald-500 to-cosmic-cyan text-slate-950 py-3.5 px-4 rounded-2xl font-extrabold transition-all text-sm flex items-center justify-center gap-2 shadow-cosmic-glow">
+                        <i class="ph ph-paper-plane-right text-lg"></i> Luncurkan Pesan
+                    </button>
+                    <button type="button" onclick="window.openDirectMailto()" class="bg-white/10 hover:bg-white/15 text-white border border-white/15 py-3.5 px-4 rounded-2xl font-semibold transition-all text-sm flex items-center justify-center gap-2">
+                        <i class="ph ph-envelope-simple text-lg"></i> Aplikasi Email
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="hidden fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl w-full max-w-xl border border-white/10 overflow-hidden p-6 sm:p-8 relative">
+            <div class="flex items-center justify-between mb-4">
+                <h3 id="project-modal-title" class="text-xl font-bold text-slate-900 dark:text-white">Tambah Karya Baru</h3>
+                <span class="text-[10px] text-brand-400 bg-brand-500/10 px-2.5 py-1 rounded-full border border-brand-500/20 font-semibold">Semua Field Opsional</span>
+            </div>
+            <form onsubmit="window.saveProjectModal(event)" class="space-y-4">
+                <input type="hidden" id="pm-id">
+                <div><label class="admin-label">Judul Karya <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><input type="text" id="pm-title" class="admin-input" placeholder="Misal: Aplikasi Absensi Digital"></div>
+                <div><label class="admin-label">Kategori <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><input type="text" id="pm-category" class="admin-input" placeholder="Misal: Web App, Design, UI/UX"></div>
+                <div><label class="admin-label">URL Gambar Sampul <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><input type="text" id="pm-image" class="admin-input" placeholder="https://images.unsplash.com/..."></div>
+                <div><label class="admin-label">Deskripsi <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><textarea id="pm-desc" rows="3" class="admin-input resize-none" placeholder="Deskripsikan fitur atau tujuan proyek ini..."></textarea></div>
+                <div><label class="admin-label">Teknologi <span class="text-slate-500 font-normal lowercase">(pisahkan koma, opsional)</span></label><input type="text" id="pm-tech" class="admin-input" placeholder="React, Tailwind, Node.js"></div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div><label class="admin-label">URL Demo <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><input type="text" id="pm-live" class="admin-input" placeholder="https://..."></div>
+                    <div><label class="admin-label">URL Source Code <span class="text-slate-500 font-normal lowercase">(opsional)</span></label><input type="text" id="pm-github" class="admin-input" placeholder="https://..."></div>
+                </div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="window.closeProjectModal()" class="px-5 py-2.5 rounded-xl bg-white/10 text-white text-xs font-semibold">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-500 text-slate-950 text-xs font-bold shadow-cosmic-glow">Simpan Karya</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Section Modal -->
+    <div id="section-modal" class="hidden fixed inset-0 z-[60] bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4">
+        <div class="bg-slate-900 rounded-3xl shadow-2xl w-full max-w-lg border border-white/10 overflow-hidden p-6 sm:p-8 relative">
+            <h3 class="text-xl font-bold text-slate-900 dark:text-white mb-4">Buat Seksi Baru</h3>
+            <form onsubmit="window.saveNewSection(event)" class="space-y-4">
+                <div><label class="admin-label">Tagline Subtitle (Atas)</label><input type="text" id="sm-sub" class="admin-input" placeholder="LAYANAN / EKSPLORASI"></div>
+                <div><label class="admin-label">Judul Utama Seksi</label><input type="text" id="sm-title" class="admin-input" placeholder="Layanan & Solusi"></div>
+                <div><label class="admin-label">Deskripsi Ringkas</label><textarea id="sm-desc" rows="3" class="admin-input resize-none" placeholder="Jelaskan mengenai seksi ini..."></textarea></div>
+                <div><label class="admin-label">URL Gambar (opsional)</label><input type="text" id="sm-image" class="admin-input" placeholder="https://..."></div>
+                <div class="pt-4 flex justify-end gap-3">
+                    <button type="button" onclick="window.closeSectionModal()" class="px-5 py-2.5 rounded-xl bg-white/10 text-white text-xs font-semibold">Batal</button>
+                    <button type="submit" class="px-5 py-2.5 rounded-xl bg-brand-500 text-slate-950 text-xs font-bold shadow-cosmic-glow">Buat Seksi</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+        import { getFirestore, doc, setDoc, onSnapshot, collection, addDoc, query, orderBy, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const appId = typeof __app_id !== 'undefined' ? __app_id : 'dethan-space-cms';
+        let firebaseConfig = null;
+        try {
+            if (typeof __firebase_config !== 'undefined') {
+                firebaseConfig = JSON.parse(__firebase_config);
+            }
+        } catch (e) { console.warn("Firebase config parse fallback:", e); }
+
+        let db = null;
+        let auth = null;
+        let messagesCollectionRef = null;
+
+        const DEFAULT_PROJECT_IMG = 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=800&q=80';
+
+        const DEFAULT_PROJECTS = [{
+            id: 1,
+            title: 'E-Commerce Dashboard Analytics',
+            category: 'Web Application',
+            image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80',
+            description: 'Dashboard analitik real-time untuk manajemen toko online dengan visualisasi chart dinamis.',
+            tech: ['React', 'Tailwind CSS', 'Chart.js'],
+            live: '#',
+            github: '#'
+        }, {
+            id: 2,
+            title: 'Space Theme Portfolio & CMS',
+            category: 'Fullstack Solution',
+            image: 'https://images.unsplash.com/photo-1506703719100-a0f3a48c0f86?auto=format&fit=crop&w=800&q=80',
+            description: 'Portofolio interaktif bertema luar angkasa dengan CMS internal tanpa server.',
+            tech: ['HTML5', 'Tailwind', 'JavaScript'],
+            live: '#',
+            github: '#'
+        }, {
+            id: 3,
+            title: 'Mobile Banking Experience UI',
+            category: 'UI/UX Design',
+            image: 'https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=800&q=80',
+            description: 'Konsep aplikasi keuangan masa depan dengan antarmuka yang ramah pengguna.',
+            tech: ['Figma', 'Prototyping', 'Design System'],
+            live: '#',
+            github: '#'
+        }, {
+            id: 4,
+            title: 'Project Database Firebase (Coming Soon P7)',
+            category: 'Upcoming',
+            image: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?auto=format&fit=crop&w=800&q=80',
+            description: 'Aplikasi interaktif yang terhubung ke cloud database realtime',
+            tech: ['Firebase', 'Firestore', 'Upcoming'],
+            live: '',
+            github: ''
+        }];
+
+        window.appState = {
+            isLoggedIn: false,
+            currentView: 'frontend',
+            adminCredentials: { username: 'admin', password: 'admin123' },
+            data: {
+                hero: {
+                    tagline: 'Terbuka untuk Kolaborasi & Proyek',
+                    title: 'Membangun <span class="cosmic-gradient-text">Pengalaman Digital</span> yang Berkesan.',
+                    bio: 'Halo! Saya Dethan Dhammata, seorang Pengembang & Desainer Digital. Saya berfokus pada pembuatan aplikasi web modern yang cepat, responsif, dan mudah digunakan.',
+                    email: 'dethan@mutiarabangsa.sch.id',
+                    avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80',
+                    hideButtons: false,
+                    hideAvatarBorder: false
+                },
+                contact: {
+                    tagline: 'MARI BERDISKUSI',
+                    title: 'Punya Ide Proyek Menarik?',
+                    description: 'Tertarik bekerja sama atau ingin bertanya tentang proyek digital Anda? Silakan hubungi saya kapan saja.',
+                    buttonText: 'Kirim Pesan'
+                },
+                projects: DEFAULT_PROJECTS,
+                customSections: [],
+                messages: []
+            }
+        };
+
+        async function initCloudPersistence() {
+            try {
+                const localState = localStorage.getItem('space_cms_state');
+                if (localState) {
+                    const parsed = JSON.parse(localState);
+                    if (parsed.data) window.appState.data = parsed.data;
+                    if (parsed.adminCredentials) window.appState.adminCredentials = parsed.adminCredentials;
+                }
+            } catch (e) { console.warn("Local storage read error:", e); }
+
+            if (!window.appState.data.projects || !Array.isArray(window.appState.data.projects) || window.appState.data.projects
+                .length === 0) {
+                window.appState.data.projects = [...DEFAULT_PROJECTS];
+            }
+            if (!window.appState.data.messages || !Array.isArray(window.appState.data.messages)) {
+                window.appState.data.messages = [];
+            }
+            if (window.appState.data.hero.hideButtons === undefined) window.appState.data.hero.hideButtons = false;
+            if (window.appState.data.hero.hideAvatarBorder === undefined) window.appState.data.hero.hideAvatarBorder = false;
+
+            if (!firebaseConfig) return;
+            try {
+                const app = initializeApp(firebaseConfig);
+                auth = getAuth(app);
+                db = getFirestore(app);
+                messagesCollectionRef = collection(db, 'artifacts', appId, 'public', 'data', 'messages');
+
+                if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
+                    await signInWithCustomToken(auth, __initial_auth_token).catch(() => signInAnonymously(auth));
+                } else {
+                    await signInAnonymously(auth).catch((err) => console.log("Auth notice:", err));
+                }
+
+                const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'portfolio_config');
+                onSnapshot(configDocRef, (snapshot) => {
+                    if (snapshot.exists()) {
+                        const cloudVal = snapshot.data();
+                        if (cloudVal.data) {
+                            window.appState.data = cloudVal.data;
+                            if (!window.appState.data.projects || !Array.isArray(window.appState.data.projects)) {
+                                window.appState.data.projects = [...DEFAULT_PROJECTS];
+                            }
+                            if (!window.appState.data.contact) {
+                                window.appState.data.contact = {
+                                    tagline: 'MARI BERDISKUSI',
+                                    title: 'Punya Ide Proyek Menarik?',
+                                    description: 'Tertarik bekerja sama atau ingin bertanya tentang proyek digital Anda? Silakan hubungi saya kapan saja.',
+                                    buttonText: 'Kirim Pesan'
+                                };
+                            }
+                            if (!window.appState.data.messages || !Array.isArray(window.appState.data.messages)) {
+                                window.appState.data.messages = [];
+                            }
+                            if (window.appState.data.hero.hideButtons === undefined) window.appState.data.hero
+                                .hideButtons = false;
+                            if (window.appState.data.hero.hideAvatarBorder === undefined) window.appState.data.hero
+                                .hideAvatarBorder = false;
+                        }
+                        if (cloudVal.adminCredentials) window.appState.adminCredentials = cloudVal.adminCredentials;
+                        try {
+                            localStorage.setItem('space_cms_state', JSON.stringify({
+                                data: window.appState.data,
+                                adminCredentials: window.appState.adminCredentials
+                            }));
+                        } catch (e) {}
+                        window.renderFrontend();
+                        if (window.appState.currentView === 'admin') window.populateAdminForms();
+                    } else {
+                        window.saveStateToCloud();
+                    }
+                }, (error) => console.error("Cloud listener error:", error));
+
+                loadMessagesFromFirestore();
+            } catch (e) { console.error("Cloud initialization error:", e); }
+        }
+
+        async function loadMessagesFromFirestore() {
+            if (!db || !messagesCollectionRef) return;
+            try {
+                const q = query(messagesCollectionRef, orderBy('timestamp', 'desc'));
+                const snapshot = await getDocs(q);
+                const msgs = [];
+                snapshot.forEach(doc => msgs.push({ id: doc.id, ...doc.data() }));
+                window.appState.data.messages = msgs;
+                if (window.appState.currentView === 'admin') window.renderAdminMessagesList();
+            } catch (e) { console.warn("Failed to load messages from Firestore:", e); }
+        }
+
+        window.saveStateToCloud = async function() {
+            try {
+                localStorage.setItem('space_cms_state', JSON.stringify({
+                    data: window.appState.data,
+                    adminCredentials: window.appState.adminCredentials
+                }));
+            } catch (e) { console.warn("Failed to write to LocalStorage:", e); }
+            if (!db) return;
+            try {
+                const configDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'settings', 'portfolio_config');
+                await setDoc(configDocRef, {
+                    data: window.appState.data,
+                    adminCredentials: window.appState.adminCredentials,
+                    lastUpdated: new Date().toISOString()
+                }, { merge: true });
+            } catch (err) { console.error("Failed to sync changes to cloud:", err); }
+        };
+
+        window.resetProjectsToDefault = function() {
+            window.appState.data.projects = [...DEFAULT_PROJECTS];
+            window.renderAdminProjectsList();
+            window.saveStateToCloud();
+            window.renderFrontend();
+            window.showToast("Daftar karya berhasil dikembalikan ke default & disimpan permanen.");
+        };
+
+        window.showToast = function(msg, isError = false) {
+            const container = document.getElementById('toast-container');
+            const card = document.getElementById('toast-card');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-message');
+            text.textContent = msg;
+            if (isError) {
+                card.className =
+                    "glass-card-cosmic px-5 py-4 rounded-2xl shadow-lg flex items-center gap-3 border border-red-500/50 text-sm font-semibold";
+                icon.className = "ph ph-x-circle text-red-400 text-2xl";
+            } else {
+                card.className =
+                    "glass-card-cosmic px-5 py-4 rounded-2xl shadow-purple-glow flex items-center gap-3 border border-brand-500/40 text-sm font-semibold";
+                icon.className = "ph ph-check-circle text-brand-400 text-2xl";
+            }
+            container.classList.remove('translate-y-20', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                container.classList.add('translate-y-20', 'opacity-0', 'pointer-events-none');
+            }, 3200);
+        };
+
+        window.renderFrontend = function() {
+            const hero = window.appState.data.hero;
+            const taglineWrapper = document.getElementById('fe-hero-tagline-wrapper');
+            const taglineText = document.getElementById('fe-hero-tagline-text');
+            taglineText.textContent = hero.tagline || '';
+            if (!hero.tagline || hero.tagline.trim() === '') {
+                taglineWrapper.style.display = 'none';
+            } else {
+                taglineWrapper.style.display = 'inline-flex';
+            }
+
+            document.getElementById('fe-hero-title').innerHTML = hero.title;
+            document.getElementById('fe-hero-bio').textContent = hero.bio;
+            document.getElementById('fe-hero-avatar').src = hero.avatar;
+
+            const buttonsDiv = document.getElementById('fe-hero-buttons');
+            if (hero.hideButtons) {
+                buttonsDiv.style.display = 'none';
+            } else {
+                buttonsDiv.style.display = 'flex';
+            }
+
+            const avatarWrapper = document.getElementById('fe-avatar-wrapper');
+            if (hero.hideAvatarBorder) {
+                avatarWrapper.classList.add('no-border');
+            } else {
+                avatarWrapper.classList.remove('no-border');
+            }
+
+            const contactData = window.appState.data.contact || {
+                tagline: 'MARI BERDISKUSI',
+                title: 'Punya Ide Proyek Menarik?',
+                description: 'Tertarik bekerja sama atau ingin bertanya tentang proyek digital Anda? Silakan hubungi saya kapan saja.',
+                buttonText: 'Kirim Pesan'
+            };
+            document.getElementById('fe-contact-tagline').textContent = contactData.tagline;
+            document.getElementById('fe-contact-title').textContent = contactData.title;
+            document.getElementById('fe-contact-desc').textContent = contactData.description;
+            document.getElementById('fe-contact-btn-text').textContent = contactData.buttonText;
+
+            window.renderProjects();
+            window.renderDynamicSections();
+            window.renderHeaderButtons();
+        };
+
+        window.renderProjects = function(filteredProjects = null) {
+            const grid = document.getElementById('fe-projects-grid');
+            if (!window.appState.data.projects || !Array.isArray(window.appState.data.projects)) {
+                window.appState.data.projects = [...DEFAULT_PROJECTS];
+            }
+            const projectsToRender = filteredProjects || window.appState.data.projects;
+            if (!projectsToRender || projectsToRender.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full text-center py-12 text-slate-400 glass-card-cosmic rounded-3xl p-8">
+                        <i class="ph ph-planet text-5xl mb-3 text-brand-400 animate-pulse"></i>
+                        <p class="font-semibold text-white">Tidak ada karya yang ditemukan.</p>
+                        <p class="text-xs mt-1 text-slate-400">Coba gunakan kata kunci pencarian yang berbeda atau reset ke default via Admin.</p>
+                    </div>
+                `;
+                return;
+            }
+            grid.innerHTML = projectsToRender.map(p => {
+                const titleText = p.title ? p.title : 'Karya Tanpa Judul';
+                const imgSrc = p.image ? p.image : DEFAULT_PROJECT_IMG;
+                const techList = Array.isArray(p.tech) ? p.tech.filter(Boolean) : [];
+                const categoryTag = p.category ? `<div class="absolute top-3 left-3">
+                    <span class="bg-slate-950/80 backdrop-blur-md text-brand-400 border border-brand-500/30 text-[10px] uppercase font-bold px-3 py-1 rounded-full">${p.category}</span>
+                </div>` : '';
+                const descText = p.description ? `<p class="text-slate-300 text-xs sm:text-sm leading-relaxed mb-4">${p.description}</p>` :
+                    '';
+                const techBadges = techList.length > 0 ? `<div class="flex flex-wrap gap-1.5 mb-5">
+                    ${techList.map(t => `<span class="badge text-[11px]">${t}</span>`).join('')}
+                </div>` : '';
+                const hasLinks = (p.live && p.live.trim()) || (p.github && p.github.trim());
+                const liveLink = (p.live && p.live.trim()) ?
+                    `<a href="${p.live}" target="_blank" class="text-brand-400 font-bold hover:underline inline-flex items-center gap-1"><i class="ph ph-arrow-square-out text-base"></i> Demo Live</a>` :
+                    '<span></span>';
+                const githubLink = (p.github && p.github.trim()) ?
+                    `<a href="${p.github}" target="_blank" class="text-slate-400 hover:text-slate-700 dark:hover:text-white inline-flex items-center gap-1"><i class="ph ph-github-logo text-base"></i> Kode Source</a>` :
+                    '<span></span>';
+                return `
+                    <div class="glass-card-cosmic rounded-3xl overflow-hidden project-card flex flex-col h-full border border-white/10 group">
+                        <div class="project-image h-48 w-full relative">
+                            <img src="${imgSrc}" alt="${titleText}" class="w-full h-full object-cover" onerror="this.src='${DEFAULT_PROJECT_IMG}'">
+                            ${categoryTag}
+                        </div>
+                        <div class="p-6 flex flex-col flex-1 justify-between">
+                            <div>
+                                <h3 class="text-xl font-bold mb-2 group-hover:text-brand-400 transition-colors text-white">${titleText}</h3>
+                                ${descText}
+                            </div>
+                            <div>
+                                ${techBadges}
+                                ${hasLinks ? `<div class="flex items-center justify-between pt-4 border-t border-white/10 text-xs">${liveLink}${githubLink}</div>` : ''}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.filterProjects = function(query) {
+            const q = query.toLowerCase().trim();
+            if (!q) { window.renderProjects(); return; }
+            const filtered = window.appState.data.projects.filter(p =>
+                (p.title && p.title.toLowerCase().includes(q)) ||
+                (p.category && p.category.toLowerCase().includes(q)) ||
+                (p.description && p.description.toLowerCase().includes(q)) ||
+                (Array.isArray(p.tech) && p.tech.some(t => t.toLowerCase().includes(q)))
+            );
+            window.renderProjects(filtered);
+        };
+
+        window.renderDynamicSections = function() {
+            const container = document.getElementById('fe-dynamic-sections');
+            container.innerHTML = window.appState.data.customSections.map(s => `
+                <section class="max-w-6xl mx-auto px-4 sm:px-6 mb-24">
+                    <div class="glass-card-cosmic rounded-3xl p-8 sm:p-12 relative overflow-hidden">
+                        ${s.image ? `<img src="${s.image}" class="w-full h-48 sm:h-64 object-cover rounded-2xl mb-4" onerror="this.style.display='none'" alt="Gambar seksi">` : ''}
+                        ${s.subtitle ? `<span class="text-brand-400 font-bold text-xs sm:text-sm tracking-widest uppercase mb-2 block">${s.subtitle}</span>` : ''}
+                        ${s.title ? `<h2 class="text-2xl sm:text-4xl font-extrabold mb-4">${s.title}</h2>` : ''}
+                        ${s.description ? `<p class="text-slate-300 dark:text-slate-300 text-sm sm:text-base leading-relaxed">${s.description}</p>` : ''}
+                    </div>
+                </section>
+            `).join('');
+        };
+
+        window.renderHeaderButtons = function() {
+            const desktop = document.getElementById('admin-header-btn-container');
+            const mobile = document.getElementById('mobile-admin-btn-container');
+            if (window.appState.isLoggedIn) {
+                desktop.innerHTML =
+                    `<button onclick="window.navigate('admin')" class="bg-brand-500/20 text-brand-400 border border-brand-500/30 font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-1.5 hover:bg-brand-500/30 transition-colors shadow-cosmic-glow"><i class="ph ph-squares-four text-base"></i> Mode Admin</button>`;
+                mobile.innerHTML =
+                    `<button onclick="window.navigate('admin'); window.toggleMobileMenu()" class="w-full bg-brand-500 text-slate-950 font-bold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2"><i class="ph ph-squares-four text-base"></i> Mode Admin Panel</button>`;
+            } else {
+                desktop.innerHTML =
+                    `<button onclick="window.navigate('login')" class="bg-white/10 hover:bg-white/20 border border-white/15 px-4 py-2 rounded-xl text-xs font-semibold transition-colors flex items-center gap-1.5"><i class="ph ph-user-lock text-base"></i> Admin Login</button>`;
+                mobile.innerHTML =
+                    `<button onclick="window.navigate('login'); window.toggleMobileMenu()" class="w-full bg-white/10 text-white font-semibold py-2.5 rounded-xl text-xs flex items-center justify-center gap-2"><i class="ph ph-user-lock text-base"></i> Admin Login</button>`;
+            }
+        };
+
+        window.navigate = function(viewName) {
+            document.getElementById('view-frontend').classList.add('hidden');
+            document.getElementById('view-admin').classList.add('hidden');
+            document.getElementById('view-login').classList.add('hidden');
+            const navbar = document.getElementById('navbar');
+            window.appState.currentView = viewName;
+            if (viewName === 'admin') {
+                if (!window.appState.isLoggedIn) { window.navigate('login'); return; }
+                navbar.classList.add('hidden');
+                document.getElementById('view-admin').classList.remove('hidden');
+                window.populateAdminForms();
+            } else if (viewName === 'login') {
+                navbar.classList.add('hidden');
+                document.getElementById('view-login').classList.remove('hidden');
+            } else {
+                navbar.classList.remove('hidden');
+                document.getElementById('view-frontend').classList.remove('hidden');
+                window.renderFrontend();
+            }
+        };
+
+        window.handleLogin = function(e) {
+            e.preventDefault();
+            const u = document.getElementById('login-username').value.trim();
+            const p = document.getElementById('login-password').value.trim();
+            const errBox = document.getElementById('login-error');
+            if (u === window.appState.adminCredentials.username && p === window.appState.adminCredentials.password) {
+                errBox.classList.add('hidden');
+                window.appState.isLoggedIn = true;
+                window.navigate('admin');
+                window.showToast("Berhasil masuk ke Dashboard Space CMS!");
+            } else {
+                errBox.classList.remove('hidden');
+            }
+        };
+
+        window.handleLogout = function() {
+            window.appState.isLoggedIn = false;
+            window.navigate('frontend');
+            window.showToast("Berhasil keluar dari Admin.");
+        };
+
+        window.switchAdminTab = function(tabName) {
+            document.querySelectorAll('.admin-tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.admin-nav-item').forEach(el => el.classList.remove('active'));
+            document.getElementById(`admin-tab-${tabName}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+        };
+
+        window.populateAdminForms = function() {
+            const hero = window.appState.data.hero;
+            document.getElementById('adm-hero-tagline').value = hero.tagline || '';
+            document.getElementById('adm-hero-title').value = hero.title || '';
+            document.getElementById('adm-hero-bio').value = hero.bio || '';
+            document.getElementById('adm-hero-email').value = hero.email || '';
+            document.getElementById('adm-hero-avatar').value = hero.avatar || '';
+            document.getElementById('adm-hide-buttons').checked = hero.hideButtons || false;
+            document.getElementById('adm-hide-avatar-border').checked = hero.hideAvatarBorder || false;
+
+            const cd = window.appState.data.contact || {
+                tagline: 'MARI BERDISKUSI',
+                title: 'Punya Ide Proyek Menarik?',
+                description: 'Tertarik bekerja sama atau ingin bertanya tentang proyek digital Anda? Silakan hubungi saya kapan saja.',
+                buttonText: 'Kirim Pesan'
+            };
+            document.getElementById('adm-contact-tagline').value = cd.tagline;
+            document.getElementById('adm-contact-title').value = cd.title;
+            document.getElementById('adm-contact-desc').value = cd.description;
+            document.getElementById('adm-contact-btn-text').value = cd.buttonText;
+
+            document.getElementById('adm-sec-username').value = window.appState.adminCredentials.username;
+            document.getElementById('adm-sec-current-pass').value = '';
+            document.getElementById('adm-sec-new-pass').value = '';
+
+            window.renderAdminProjectsList();
+            window.renderAdminSectionsList();
+            window.renderAdminMessagesList();
+        };
+
+        window.saveHeroSection = function(e) {
+            e.preventDefault();
+            const hero = window.appState.data.hero;
+            hero.tagline = document.getElementById('adm-hero-tagline').value;
+            hero.title = document.getElementById('adm-hero-title').value;
+            hero.bio = document.getElementById('adm-hero-bio').value;
+            hero.email = document.getElementById('adm-hero-email').value;
+            hero.avatar = document.getElementById('adm-hero-avatar').value;
+            hero.hideButtons = document.getElementById('adm-hide-buttons').checked;
+            hero.hideAvatarBorder = document.getElementById('adm-hide-avatar-border').checked;
+            window.saveStateToCloud();
+            window.showToast('Profil Hero berhasil disimpan permanen ke cloud!');
+        };
+
+        window.saveContactSection = function(e) {
+            e.preventDefault();
+            if (!window.appState.data.contact) window.appState.data.contact = {};
+            window.appState.data.contact.tagline = document.getElementById('adm-contact-tagline').value;
+            window.appState.data.contact.title = document.getElementById('adm-contact-title').value;
+            window.appState.data.contact.description = document.getElementById('adm-contact-desc').value;
+            window.appState.data.contact.buttonText = document.getElementById('adm-contact-btn-text').value;
+            window.saveStateToCloud();
+            window.showToast('Seksi Kontak berhasil disimpan permanen!');
+        };
+
+        window.renderAdminProjectsList = function() {
+            const list = document.getElementById('adm-projects-list');
+            list.innerHTML = window.appState.data.projects.map(p => {
+                const titleText = p.title ? p.title : 'Karya Tanpa Judul';
+                const catText = p.category ? p.category : 'Tanpa Kategori';
+                const imgSrc = p.image ? p.image : DEFAULT_PROJECT_IMG;
+                return `
+                    <div class="glass-card-cosmic p-4 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-4 border border-white/10">
+                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                            <img src="${imgSrc}" class="w-14 h-14 rounded-xl object-cover" onerror="this.src='${DEFAULT_PROJECT_IMG}'">
+                            <div>
+                                <h4 class="font-bold text-slate-900 dark:text-white text-sm">${titleText}</h4>
+                                <p class="text-xs text-slate-400">${catText}</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
+                            <button onclick="window.editProjectModal(${p.id})" class="px-3 py-1.5 rounded-lg bg-slate-800 text-slate-200 text-xs hover:text-white">Edit</button>
+                            <button onclick="window.deleteProject(${p.id})" class="px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 text-xs hover:bg-red-500/30">Hapus</button>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        };
+
+        window.openProjectModal = function() {
+            document.getElementById('project-modal-title').textContent = 'Tambah Karya Baru';
+            document.getElementById('pm-id').value = '';
+            document.getElementById('pm-title').value = '';
+            document.getElementById('pm-category').value = '';
+            document.getElementById('pm-image').value = '';
+            document.getElementById('pm-desc').value = '';
+            document.getElementById('pm-tech').value = '';
+            document.getElementById('pm-live').value = '';
+            document.getElementById('pm-github').value = '';
+            document.getElementById('project-modal').classList.remove('hidden');
+        };
+
+        window.closeProjectModal = function() {
+            document.getElementById('project-modal').classList.add('hidden');
+        };
+
+        window.editProjectModal = function(id) {
+            const p = window.appState.data.projects.find(x => x.id === id);
+            if (!p) return;
+            document.getElementById('project-modal-title').textContent = 'Edit Karya';
+            document.getElementById('pm-id').value = p.id;
+            document.getElementById('pm-title').value = p.title || '';
+            document.getElementById('pm-category').value = p.category || '';
+            document.getElementById('pm-image').value = p.image || '';
+            document.getElementById('pm-desc').value = p.description || '';
+            document.getElementById('pm-tech').value = Array.isArray(p.tech) ? p.tech.join(', ') : '';
+            document.getElementById('pm-live').value = p.live || '';
+            document.getElementById('pm-github').value = p.github || '';
+            document.getElementById('project-modal').classList.remove('hidden');
+        };
+
+        window.saveProjectModal = function(e) {
+            e.preventDefault();
+            const id = document.getElementById('pm-id').value;
+            const techRaw = document.getElementById('pm-tech').value.trim();
+            const techList = techRaw ? techRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+            const projectObj = {
+                id: id ? parseInt(id) : Date.now(),
+                title: document.getElementById('pm-title').value.trim(),
+                category: document.getElementById('pm-category').value.trim(),
+                image: document.getElementById('pm-image').value.trim(),
+                description: document.getElementById('pm-desc').value.trim(),
+                tech: techList,
+                live: document.getElementById('pm-live').value.trim(),
+                github: document.getElementById('pm-github').value.trim()
+            };
+            if (id) {
+                const idx = window.appState.data.projects.findIndex(x => x.id === parseInt(id));
+                if (idx !== -1) window.appState.data.projects[idx] = projectObj;
+            } else {
+                window.appState.data.projects.push(projectObj);
+            }
+            window.closeProjectModal();
+            window.renderAdminProjectsList();
+            window.saveStateToCloud();
+            window.renderFrontend();
+            window.showToast("Karya berhasil disimpan permanen!");
+        };
+
+        window.deleteProject = function(id) {
+            window.appState.data.projects = window.appState.data.projects.filter(x => x.id !== id);
+            window.renderAdminProjectsList();
+            window.saveStateToCloud();
+            window.renderFrontend();
+            window.showToast("Karya berhasil dihapus permanen.");
+        };
+
+        window.renderAdminSectionsList = function() {
+            const list = document.getElementById('adm-sections-list');
+            if (window.appState.data.customSections.length === 0) {
+                list.innerHTML =
+                    `<p class="text-xs text-slate-400 italic">Belum ada seksi kustom. Klik "Tambah Seksi Baru" untuk membuat.</p>`;
+                return;
+            }
+            list.innerHTML = window.appState.data.customSections.map(s => `
+                <div class="glass-card-cosmic p-5 rounded-2xl flex items-center justify-between gap-4 border border-white/10">
+                    <div class="flex items-center gap-4">
+                        ${s.image ? `<img src="${s.image}" class="w-12 h-12 rounded-xl object-cover" onerror="this.style.display='none'">` : ''}
+                        <div>
+                            ${s.subtitle ? `<span class="text-brand-400 font-bold text-[10px] uppercase">${s.subtitle}</span>` : ''}
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base">${s.title || 'Seksi Tanpa Judul'}</h4>
+                            ${s.description ? `<p class="text-xs text-slate-300">${s.description}</p>` : ''}
+                        </div>
+                    </div>
+                    <button onclick="window.deleteSection(${s.id})" class="px-3 py-2 rounded-xl bg-red-500/20 text-red-400 text-xs font-semibold hover:bg-red-500/30">Hapus Seksi</button>
+                </div>
+            `).join('');
+        };
+
+        window.openSectionModal = function() {
+            document.getElementById('sm-sub').value = '';
+            document.getElementById('sm-title').value = '';
+            document.getElementById('sm-desc').value = '';
+            document.getElementById('sm-image').value = '';
+            document.getElementById('section-modal').classList.remove('hidden');
+        };
+
+        window.closeSectionModal = function() {
+            document.getElementById('section-modal').classList.add('hidden');
+        };
+
+        window.saveNewSection = function(e) {
+            e.preventDefault();
+            const newSec = {
+                id: Date.now(),
+                subtitle: document.getElementById('sm-sub').value.trim(),
+                title: document.getElementById('sm-title').value.trim(),
+                description: document.getElementById('sm-desc').value.trim(),
+                image: document.getElementById('sm-image').value.trim()
+            };
+            window.appState.data.customSections.push(newSec);
+            window.closeSectionModal();
+            window.renderAdminSectionsList();
+            window.saveStateToCloud();
+            window.showToast("Seksi baru berhasil dibuat & disimpan!");
+        };
+
+        window.deleteSection = function(id) {
+            window.appState.data.customSections = window.appState.data.customSections.filter(x => x.id !== id);
+            window.renderAdminSectionsList();
+            window.saveStateToCloud();
+            window.showToast("Seksi dihapus.");
+        };
+
+        // ---- MESSAGES ----
+        window.renderAdminMessagesList = function() {
+            const list = document.getElementById('adm-messages-list');
+            const msgs = window.appState.data.messages || [];
+            if (msgs.length === 0) {
+                list.innerHTML = `<p class="text-xs text-slate-400 italic">Belum ada pesan masuk.</p>`;
+                return;
+            }
+            list.innerHTML = msgs.map((m, idx) => `
+                <div class="glass-card-cosmic p-5 rounded-2xl border border-white/10">
+                    <div class="flex items-start justify-between gap-3">
+                        <div>
+                            <div class="flex items-center gap-2 flex-wrap">
+                                <span class="font-bold text-white text-sm">${m.name || 'Tanpa Nama'}</span>
+                                <span class="text-xs text-slate-400">${m.email || ''}</span>
+                                <span class="text-[10px] text-slate-500">${m.timestamp ? new Date(m.timestamp).toLocaleString() : ''}</span>
+                            </div>
+                            <p class="text-sm font-semibold text-slate-200 mt-1">${m.subject || 'Tanpa Subjek'}</p>
+                            <p class="text-xs text-slate-300 mt-1 whitespace-pre-wrap">${m.message || ''}</p>
+                        </div>
+                        <button onclick="window.deleteMessage(${idx})" class="text-red-400 hover:text-red-300 text-xs px-2 py-1 rounded bg-red-500/20">Hapus</button>
+                    </div>
+                </div>
+            `).join('');
+        };
+
+        window.deleteMessage = function(index) {
+            if (!confirm('Hapus pesan ini?')) return;
+            const msgs = window.appState.data.messages || [];
+            if (index >= 0 && index < msgs.length) {
+                msgs.splice(index, 1);
+                window.appState.data.messages = msgs;
+                window.saveStateToCloud();
+                window.renderAdminMessagesList();
+                window.showToast('Pesan dihapus.');
+            }
+        };
+
+        // ---- CONTACT FORM ----
+        window.handleSendContactForm = async function(e) {
+            e.preventDefault();
+            const name = document.getElementById('contact-name').value.trim();
+            const email = document.getElementById('contact-email').value.trim();
+            const subject = document.getElementById('contact-subject').value.trim();
+            const message = document.getElementById('contact-message').value.trim();
+
+            if (!name || !email || !subject || !message) {
+                window.showToast('Harap isi semua kolom!', true);
+                return;
+            }
+
+            const msgObj = {
+                name,
+                email,
+                subject,
+                message,
+                timestamp: new Date().toISOString()
+            };
+
+            try {
+                if (db && messagesCollectionRef) {
+                    await addDoc(messagesCollectionRef, msgObj);
+                    window.showToast('Pesan berhasil dikirim!');
+                } else {
+                    if (!window.appState.data.messages) window.appState.data.messages = [];
+                    window.appState.data.messages.unshift(msgObj);
+                    window.saveStateToCloud();
+                    window.showToast('Pesan berhasil dikirim (disimpan lokal).');
+                }
+            } catch (err) {
+                console.error('Failed to send message:', err);
+                window.showToast('Gagal mengirim pesan, coba lagi.', true);
+                return;
+            }
+
+            document.getElementById('contact-name').value = '';
+            document.getElementById('contact-email').value = '';
+            document.getElementById('contact-subject').value = '';
+            document.getElementById('contact-message').value = '';
+            window.closeContactModal();
+
+            if (window.appState.currentView === 'admin') {
+                window.renderAdminMessagesList();
+            }
+        };
+
+        // ============================================================
+        // PERBAIKAN: Tombol Aplikasi Email → Buka Gmail Compose
+        // ============================================================
+        window.openDirectMailto = function() {
+            const email = window.appState.data.hero.email;
+            const subjectInput = document.getElementById('contact-subject');
+            const subject = subjectInput ? subjectInput.value.trim() : '';
+
+            if (email) {
+                // Buat URL Gmail compose dengan parameter to dan subject
+                let gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${encodeURIComponent(email)}`;
+                if (subject) {
+                    gmailUrl += `&su=${encodeURIComponent(subject)}`;
+                }
+                // Buka di tab baru
+                window.open(gmailUrl, '_blank');
+            } else {
+                window.showToast('Email tujuan tidak tersedia. Silakan set email di admin.', true);
+            }
+        };
+
+        // ---- SECURITY ----
+        window.saveSecuritySettings = function(e) {
+            e.preventDefault();
+            const u = document.getElementById('adm-sec-username').value.trim();
+            const curP = document.getElementById('adm-sec-current-pass').value.trim();
+            const newP = document.getElementById('adm-sec-new-pass').value.trim();
+            if (curP !== window.appState.adminCredentials.password) {
+                window.showToast('Password saat ini salah!', true);
+                return;
+            }
+            window.appState.adminCredentials.username = u;
+            window.appState.adminCredentials.password = newP;
+            window.saveStateToCloud();
+            document.getElementById('adm-sec-current-pass').value = '';
+            document.getElementById('adm-sec-new-pass').value = '';
+            window.showToast('Username & Password admin berhasil diperbarui permanen!');
+        };
+
+        window.toggleTheme = function() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                html.classList.add('light');
+                localStorage.theme = 'light';
+                window.updateThemeIcons(false);
+            } else {
+                html.classList.remove('light');
+                html.classList.add('dark');
+                localStorage.theme = 'dark';
+                window.updateThemeIcons(true);
+            }
+        };
+
+        window.updateThemeIcons = function(isDark) {
+            const body = document.body;
+            const icon = document.getElementById('theme-icon');
+            const iconMobile = document.getElementById('theme-icon-mobile');
+            const iconAdmin = document.getElementById('theme-icon-admin');
+            if (isDark) {
+                body.className =
+                    "space-bg-dark antialiased selection:bg-brand-500 selection:text-white relative transition-colors duration-500 overflow-x-hidden min-h-screen flex flex-col";
+                if (icon) icon.className = 'ph ph-sun text-lg text-amber-400';
+                if (iconMobile) iconMobile.className = 'ph ph-sun text-base text-amber-400';
+                if (iconAdmin) iconAdmin.className = 'ph ph-sun text-lg text-amber-400';
+            } else {
+                body.className =
+                    "space-bg-light antialiased selection:bg-brand-500 selection:text-white relative transition-colors duration-500 overflow-x-hidden min-h-screen flex flex-col";
+                if (icon) icon.className = 'ph ph-moon text-lg text-slate-700';
+                if (iconMobile) iconMobile.className = 'ph ph-moon text-base text-slate-700';
+                if (iconAdmin) iconAdmin.className = 'ph ph-moon text-lg text-slate-700';
+            }
+        };
+
+        window.toggleMobileMenu = function() {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        };
+
+        window.openContactModal = function() {
+            document.getElementById('contact-modal').classList.remove('hidden');
+        };
+
+        window.closeContactModal = function() {
+            document.getElementById('contact-modal').classList.add('hidden');
+        };
+
+        window.copyToClipboard = function(text) {
+            const tempInput = document.createElement('input');
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            document.execCommand('copy');
+            document.body.removeChild(tempInput);
+            const btn = document.getElementById('copy-btn');
+            if (btn) {
+                const oldText = btn.innerHTML;
+                btn.innerHTML = `<i class="ph ph-check text-xl text-brand-400"></i> Tersalin!`;
+                setTimeout(() => { btn.innerHTML = oldText; }, 2000);
+            }
+        };
+
+        // ---- SPACE CANVAS ----
+        function initSpaceCanvas() {
+            const canvas = document.getElementById('space-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = canvas.width = window.innerWidth;
+            let height = canvas.height = window.innerHeight;
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const starCount = Math.floor((width * height) / 4500);
+            const stars = [];
+            for (let i = 0; i < starCount; i++) {
+                stars.push({
+                    x: Math.random() * width,
+                    y: Math.random() * height,
+                    radius: Math.random() * 2.2 + 0.4,
+                    alpha: Math.random(),
+                    speed: Math.random() * 0.02 + 0.008,
+                    color: Math.random() > 0.7 ? '#a855f7' : (Math.random() > 0.4 ? '#38bdf8' : '#4ade80')
+                });
+            }
+
+            const comets = [];
+
+            function createComet() {
+                if (Math.random() > 0.04) return;
+                comets.push({
+                    x: Math.random() * width,
+                    y: Math.random() * (height * 0.6),
+                    length: Math.random() * 110 + 60,
+                    speed: Math.random() * 12 + 7,
+                    angle: Math.PI / 4,
+                    alpha: 1
+                });
+            }
+
+            const burstParticles = [];
+
+            function createStardustBurst(x, y) {
+                const count = 35;
+                const colors = ['#22c55e', '#38bdf8', '#a855f7', '#ec4899', '#facc15'];
+                for (let i = 0; i < count; i++) {
+                    const angle = (Math.PI * 2 / count) * i + (Math.random() * 0.6);
+                    const speed = Math.random() * 5 + 2;
+                    burstParticles.push({
+                        x,
+                        y,
+                        vx: Math.cos(angle) * speed,
+                        vy: Math.sin(angle) * speed,
+                        size: Math.random() * 4 + 2,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        life: 1.0,
+                        decay: Math.random() * 0.025 + 0.015
+                    });
+                }
+            }
+
+            window.addEventListener('pointermove', (e) => {
+                if (Math.random() < 0.2) {
+                    burstParticles.push({
+                        x: e.clientX,
+                        y: e.clientY,
+                        vx: (Math.random() - 0.5) * 2,
+                        vy: (Math.random() - 0.5) * 2,
+                        size: Math.random() * 2.5 + 1,
+                        color: Math.random() > 0.5 ? '#38bdf8' : '#a855f7',
+                        life: 0.8,
+                        decay: 0.03
+                    });
+                }
+            });
+
+            window.addEventListener('pointerdown', (e) => createStardustBurst(e.clientX, e.clientY));
+
+            function render() {
+                ctx.clearRect(0, 0, width, height);
+                const isLight = document.documentElement.classList.contains('light');
+                for (let s of stars) {
+                    s.alpha += s.speed;
+                    if (s.alpha > 1 || s.alpha < 0.1) s.speed = -s.speed;
+                    ctx.beginPath();
+                    ctx.arc(s.x, s.y, s.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = isLight ? (s.color === '#4ade80' ? '#16a34a' : (s.color === '#38bdf8' ? '#0284c7' :
+                        '#9333ea')) : s.color;
+                    ctx.globalAlpha = isLight ? Math.max(0.25, Math.min(0.8, s.alpha)) : Math.max(0.15, Math.min(1, s
+                    .alpha));
+                    ctx.fill();
+                }
+                createComet();
+                for (let i = comets.length - 1; i >= 0; i--) {
+                    const c = comets[i];
+                    c.x += Math.cos(c.angle) * c.speed;
+                    c.y += Math.sin(c.angle) * c.speed;
+                    c.alpha -= 0.018;
+                    if (c.alpha <= 0) { comets.splice(i, 1); continue; }
+                    const tailX = c.x - Math.cos(c.angle) * c.length;
+                    const tailY = c.y - Math.sin(c.angle) * c.length;
+                    const grad = ctx.createLinearGradient(c.x, c.y, tailX, tailY);
+                    if (isLight) {
+                        grad.addColorStop(0, 'rgba(2, 132, 199, ' + c.alpha + ')');
+                        grad.addColorStop(0.5, 'rgba(147, 51, 234, ' + (c.alpha * 0.6) + ')');
+                        grad.addColorStop(1, 'rgba(2, 132, 199, 0)');
+                    } else {
+                        grad.addColorStop(0, 'rgba(56, 189, 248, ' + c.alpha + ')');
+                        grad.addColorStop(0.5, 'rgba(168, 85, 247, ' + (c.alpha * 0.6) + ')');
+                        grad.addColorStop(1, 'rgba(56, 189, 248, 0)');
+                    }
+                    ctx.beginPath();
+                    ctx.moveTo(c.x, c.y);
+                    ctx.lineTo(tailX, tailY);
+                    ctx.strokeStyle = grad;
+                    ctx.lineWidth = 2.5;
+                    ctx.stroke();
+                }
+                for (let i = burstParticles.length - 1; i >= 0; i--) {
+                    const p = burstParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+                    p.vx *= 0.95;
+                    p.vy *= 0.95;
+                    p.life -= p.decay;
+                    if (p.life <= 0) { burstParticles.splice(i, 1); continue; }
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.size * p.life, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = Math.max(0, p.life);
+                    ctx.shadowBlur = 12;
+                    ctx.shadowColor = p.color;
+                    ctx.fill();
+                    ctx.shadowBlur = 0;
+                }
+                ctx.globalAlpha = 1.0;
+                requestAnimationFrame(render);
+            }
+            requestAnimationFrame(render);
+        }
+
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        window.addEventListener('load', () => {
+            document.documentElement.classList.add('dark');
+            document.documentElement.classList.remove('light');
+            initSpaceCanvas();
+            initCloudPersistence();
+            window.renderFrontend();
+            window.updateThemeIcons(true);
+            if (window.location.hash === '#admin') window.navigate('admin');
+        });
+    </script>
+</body>
+</html>
